@@ -41,14 +41,14 @@ foreach ($servers as $server) {
   $cfg['Servers'][$i]['port'] = url_part($url, 'port');
   $cfg['Servers'][$i]['socket'] = url_part($url, 'path');
   $cfg['Servers'][$i]['connect_type'] = 'tcp';
-  $cfg['Servers'][$i]['auth_type'] = 'cookie';
+  $cfg['Servers'][$i]['auth_type'] = 'cookie'; //'http';//
   $cfg['Servers'][$i]['user'] = url_part($url, 'user');
   $cfg['Servers'][$i]['password'] = url_part($url, 'password');
 }
 
 
 /* End of servers configuration */
-
+$cfg['PmaAbsoluteUri'] = 'https://localhost/mysql';
 $cfg['blowfish_secret'] = 'NO_SECRET';
 $cfg['DefaultLang'] = 'en';
 $cfg['ServerDefault'] = 1;

@@ -29,13 +29,16 @@ By default the HTTP header `X-Forwarded-For` is used in access log
 so proxying requests is doable.
 
 For e.g. nginx proxy do:
+```nginx configuration
+location /phpmyadmin {
+    proxy_pass http://phpmyadmin;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-    location / {
-      proxy_pass http://backend;
-      proxy_set_header Host $host;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-
+    client_max_body_size 4096m;
+    client_body_buffer_size 32m;
+}
+```
 
 ## Testing
 

@@ -1,37 +1,36 @@
-FROM alpine:3.12
+FROM alpine
 MAINTAINER Peter Leitzen <peter@leitzen.de>
 
-ENV RELEASE_DATE 2021-02-13
-ENV PHPMYADMIN_VERSION 4.9.7
+ENV RELEASE_DATE 2022-05-11
+ENV PHPMYADMIN_VERSION 5.2.0
 
 ENV PHPMYADMIN_DIR /usr/share/webapps/phpmyadmin/
-ENV PHPMYADNIN_PACKAGE phpMyAdmin-$PHPMYADMIN_VERSION-english
-ENV PHPMYADMIN_DOWNLOAD https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/$PHPMYADNIN_PACKAGE.tar.gz
+ENV PHPMYADNIN_PACKAGE phpMyAdmin-$PHPMYADMIN_VERSION-all-languages
+ENV PHPMYADMIN_DOWNLOAD https://files.phpmyadmin.net/phpMyAdmin/$PHPMYADMIN_VERSION/$PHPMYADNIN_PACKAGE.zip
 
 ENV REQUIRED_PACKAGES \
   apache2 \
-  php7 \
-  php7-apache2 \
-  php7-bz2 \
-  php7-ctype \
-  php7-gd \
-  php7-json \
-  php7-mbstring \
-  php7-mcrypt \
-  php7-mysqli \
-  php7-openssl \
-  php7-session \
-  php7-zip \
-  php7-zlib
+  php81 \
+  php81-apache2 \
+  php81-bz2 \
+  php81-ctype \
+  php81-gd \
+  php81-json \
+  php81-mbstring \
+  php81-mysqli \
+  php81-openssl \
+  php81-session \
+  php81-zip \
+  php81-zlib
 
-RUN \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories; apk update; \
   apk add -U --no-cache $REQUIRED_PACKAGES && \
-  rm /usr/bin/php7
+  rm /usr/bin/php81
 
 RUN \
   mkdir -p /usr/share/webapps && \
   cd /tmp && \
-  wget -q -O - $PHPMYADMIN_DOWNLOAD | tar xzf - && \
+  wget -q -O pma.zip $PHPMYADMIN_DOWNLOAD ; unzip pma.zip && \
   mv $PHPMYADNIN_PACKAGE $PHPMYADMIN_DIR && \
   rm -fr $PHPMYADMIN_DIR/{setup,config.sample.inc.php} && \
   chown -R apache:apache $PHPMYADMIN_DIR && \
